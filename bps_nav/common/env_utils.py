@@ -47,7 +47,7 @@ def construct_envs(
         "content",
     )
 
-    should_set_affinity = True
+    should_set_affinity = False # disabled due to failing assert True
     task = config.TASK.lower()
     assert task in {"pointnav", "flee", "exploration"}
 
@@ -60,7 +60,7 @@ def construct_envs(
 
     envs = envs_class(
         episodes_folder,
-        "data/scene_datasets",
+        "./", # "data/scene_datasets",
         batch_size,
         num_worker_groups,
         num_workers,

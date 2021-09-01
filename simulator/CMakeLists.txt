@@ -11,7 +11,9 @@ find_package(ZLIB REQUIRED)
 
 add_subdirectory(external)
 
+# temp hack: add SHARED NO_EXTRAS to improve debugging
 pybind11_add_module(bps_sim
+    SHARED NO_EXTRAS
     simulator.cpp)
 
 target_compile_options(bps_sim PRIVATE -Wall -Wextra -Wshadow)

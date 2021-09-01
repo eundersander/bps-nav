@@ -334,7 +334,7 @@ class DDPPOTrainer(PPOTrainer):
         Returns:
             None
         """
-        import apex
+        # import apex # temp disable
 
         self.local_rank, tcp_store = init_distrib_slurm(
             self.config.RL.DDPPO.distrib_backend
@@ -592,8 +592,9 @@ class DDPPOTrainer(PPOTrainer):
 
             lr_scheduler.load_state_dict(interrupted_state["lr_sched_state"])
 
-            if "amp_state" in interrupted_state:
-                apex.amp.load_state_dict(interrupted_state["amp_state"])
+            # if "amp_state" in interrupted_state:
+            #     apex.amp.load_state_dict(interrupted_state["amp_state"])
+            assert "ampt_state" not in interrupted_state
 
             if "grad_scaler_state" in interrupted_state:
                 self.agent.grad_scaler.load_state_dict(

@@ -132,6 +132,11 @@ static void set_affinity(int target_cpu_idx, int num_cpus = 1)
 
     cpu_set_t cpuset;
     pthread_getaffinity_np(pthread_self(), sizeof(cpuset), &cpuset);
+    cout << "CPU_COUNT: " << CPU_COUNT(&cpuset) << std::endl;
+    cout << "target_cpu_idx: " << target_cpu_idx << std::endl;
+    if (target_cpu_idx >= CPU_COUNT(&cpuset)) { // temp hack
+      return;
+    }
     assert(target_cpu_idx < CPU_COUNT(&cpuset));
     cpu_set_t worker_set;
     CPU_ZERO(&worker_set);
@@ -1086,9 +1091,9 @@ public:
     SceneSwapper() = delete;
     SceneSwapper(const SceneSwapper &) = delete;
 
-    bool canSwapScene() const
+    bool canSwapScene()
     {
-        return next_scene_ == nullptr && !next_scene_future_.valid();
+        return next_scene_ == nullptr && !next_scene_future_.get(); // !next_scene_future_.valid();
     }
 
     void startSceneSwap()
